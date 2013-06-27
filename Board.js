@@ -66,7 +66,15 @@
     },
 
     hasAnyRowConflicts: function () {
-      return false; // fixme
+      var result = false;
+      totalRows = this.get('n'); // --> 4
+
+      for (var i = 0; i < totalRows; i++) {
+        if (this.hasRowConflictAt(i)) {
+          result = true;
+        }
+      }
+      return result;
     },
 
     hasColConflictAt: function (colIndex) {
