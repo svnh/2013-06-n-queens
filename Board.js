@@ -1,8 +1,8 @@
-(function(){
+(function () {
 
   window.Board = Backbone.Model.extend({
 
-    initialize: function(params){
+    initialize: function (params) {
       if (params.n) {
         this.set(makeEmptyMatrix(this.get('n')));
       } else {
@@ -10,90 +10,94 @@
       }
     },
 
-    rows: function(){
-      return _(_.range(this.get('n'))).map(function(rowIndex){
+    rows: function () {
+      return _(_.range(this.get('n'))).map(function (rowIndex) {
         return this.get(rowIndex);
       }, this);
     },
 
-    togglePiece: function(rowIndex, colIndex){
-      this.get(rowIndex)[colIndex] = + !this.get(rowIndex)[colIndex];
+    togglePiece: function (rowIndex, colIndex) {
+      this.get(rowIndex)[colIndex] = +!this.get(rowIndex)[colIndex];
       this.trigger('change');
     },
 
-    _getFirstRowColumnIndexForMajorDiagonalOn: function(rowIndex, colIndex){
+    _getFirstRowColumnIndexForMajorDiagonalOn: function (rowIndex, colIndex) {
       return colIndex - rowIndex;
     },
 
-    _getFirstRowColumnIndexForMinorDiagonalOn: function(rowIndex, colIndex){
+    _getFirstRowColumnIndexForMinorDiagonalOn: function (rowIndex, colIndex) {
       return colIndex + rowIndex;
     },
 
-
-    hasAnyRooksConflicts: function(){
+    hasAnyRooksConflicts: function () {
       return this.hasAnyRowConflicts() || this.hasAnyColConflicts();
     },
 
-    hasAnyQueenConflictsOn: function(rowIndex, colIndex){
+    hasAnyQueenConflictsOn: function (rowIndex, colIndex) {
       return (
         this.hasRowConflictAt(rowIndex) ||
         this.hasColConflictAt(colIndex) ||
         this.hasMajorDiagonalConflictAt(this._getFirstRowColumnIndexForMajorDiagonalOn(rowIndex, colIndex)) ||
-        this.hasMinorDiagonalConflictAt(this._getFirstRowColumnIndexForMinorDiagonalOn(rowIndex, colIndex))
-      );
+        this.hasMinorDiagonalConflictAt(this._getFirstRowColumnIndexForMinorDiagonalOn(rowIndex, colIndex)));
     },
 
-    hasAnyQueensConflicts: function(){
+    hasAnyQueensConflicts: function () {
       return this.hasAnyRooksConflicts() || this.hasAnyMajorDiagonalConflicts() || this.hasAnyMinorDiagonalConflicts();
     },
 
-    _isInBounds: function(rowIndex, colIndex){
+    _isInBounds: function (rowIndex, colIndex) {
       return (
         0 <= rowIndex && rowIndex < this.get('n') &&
-        0 <= colIndex && colIndex < this.get('n')
-      );
+        0 <= colIndex && colIndex < this.get('n'));
     },
-
 
     // todo: fill in all these functions - they'll help you!
 
-    hasRowConflictAt: function(rowIndex){
+    hasRowConflictAt: function (rowIndex) {
+      var result = false;
+      var row = this.get(rowIndex);
+      var rowSum = _(row).reduce(function (memo, num) {
+        return memo + num;
+      }, 0);
+      if (rowSum > 1) {
+        result = true;
+      }
+      return result;
+    },
+
+    hasAnyRowConflicts: function () {
       return false; // fixme
     },
 
-    hasAnyRowConflicts: function(){
+    hasColConflictAt: function (colIndex) {
       return false; // fixme
     },
 
-    hasColConflictAt: function(colIndex){
+    hasAnyColConflicts: function () {
       return false; // fixme
     },
 
-    hasAnyColConflicts: function(){
+    hasMajorDiagonalConflictAt: function (majorDiagonalColumnIndexAtFirstRow) {
       return false; // fixme
     },
 
-    hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow){
+    hasAnyMajorDiagonalConflicts: function () {
       return false; // fixme
     },
 
-    hasAnyMajorDiagonalConflicts: function(){
+    hasMinorDiagonalConflictAt: function (minorDiagonalColumnIndexAtFirstRow) {
       return false; // fixme
     },
 
-    hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow){
-      return false; // fixme
-    },
-
-    hasAnyMinorDiagonalConflicts: function(){
+    hasAnyMinorDiagonalConflicts: function () {
       return false; // fixme
     }
 
   });
 
-  var makeEmptyMatrix = function(n){
-    return _(_.range(n)).map(function(){
-      return _(_.range(n)).map(function(){
+  var makeEmptyMatrix = function (n) {
+    return _(_.range(n)).map(function () {
+      return _(_.range(n)).map(function () {
         return 0;
       });
     });
