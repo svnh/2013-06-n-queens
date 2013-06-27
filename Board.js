@@ -25,6 +25,7 @@
 
     togglePiece: function (rowIndex, colIndex) {
       // console.log(this.get(rowIndex)[colIndex]);
+
       this.get(rowIndex)[colIndex] = +!this.get(rowIndex)[colIndex];
       this.trigger('change');
     },
@@ -109,12 +110,30 @@
       return result;
     },
 
-    hasMajorDiagonalConflictAt: function (majorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+        hasMajorDiagonalConflictAt: function (index) {
+      var n = this.get('n');
+      var sum = 0;
+      // debugger;
+      for (var i = 0; i < n; i++) {
+        if (this.rows()[i][index + i]) {
+          sum++;
+        }
+      }
+      return !!(sum > 1);
     },
 
     hasAnyMajorDiagonalConflicts: function () {
-      return false; // fixme
+      var result = false;
+      totalDiags = this.get('n'); // --> 4
+
+      for (var i = 0; i < totalDiags; i++) {
+        if (this.hasMajorDiagonalConflictAt(i)) {
+          result = true;
+        }
+      }
+
+
+      return result;
     },
 
     hasMinorDiagonalConflictAt: function (minorDiagonalColumnIndexAtFirstRow) {
