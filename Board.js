@@ -18,7 +18,7 @@
 
     getColumn: function (colIndex) {
       return _(_.range(this.get('n')))
-      .map(function (rowIndex) {
+        .map(function (rowIndex) {
         return this.get(rowIndex)[colIndex];
       }, this);
     },
@@ -98,7 +98,15 @@
     },
 
     hasAnyColConflicts: function () {
-      return false; // fixme
+      var result = false;
+      totalCols = this.get('n'); // --> 4
+
+      for (var i = 0; i < totalCols; i++) {
+        if (this.hasColConflictAt(i)) {
+          result = true;
+        }
+      }
+      return result;
     },
 
     hasMajorDiagonalConflictAt: function (majorDiagonalColumnIndexAtFirstRow) {
