@@ -110,7 +110,7 @@
       return result;
     },
 
-        hasMajorDiagonalConflictAt: function (index) {
+    hasMajorDiagonalConflictAt: function (index) {
       var n = this.get('n');
       var sum = 0;
       // debugger;
@@ -132,17 +132,33 @@
         }
       }
 
-
       return result;
     },
 
-    hasMinorDiagonalConflictAt: function (minorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+    hasMinorDiagonalConflictAt: function (index) {
+      var n = this.get('n');
+      var sum = 0;
+      // debugger;
+      for (var i = 0; i < n; i++) {
+        if (this.rows()[i][index - i]) {
+          sum++;
+        }
+      }
+      return !!(sum > 1);
     },
 
     hasAnyMinorDiagonalConflicts: function () {
-      return false; // fixme
-    }
+      var result = false;
+      totalDiags = this.get('n'); // --> 4
+
+      for (var i = 0; i < totalDiags; i++) {
+        if (this.hasMinorDiagonalConflictAt(i)) {
+          result = true;
+        }
+      }
+
+      return result;
+    },
 
   });
 
