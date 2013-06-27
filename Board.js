@@ -16,7 +16,15 @@
       }, this);
     },
 
+    getColumn: function (colIndex) {
+      return _(_.range(this.get('n')))
+      .map(function (rowIndex) {
+        return this.get(rowIndex)[colIndex];
+      }, this);
+    },
+
     togglePiece: function (rowIndex, colIndex) {
+      // console.log(this.get(rowIndex)[colIndex]);
       this.get(rowIndex)[colIndex] = +!this.get(rowIndex)[colIndex];
       this.trigger('change');
     },
@@ -78,7 +86,15 @@
     },
 
     hasColConflictAt: function (colIndex) {
-      return false; // fixme
+      var result = false;
+      var col = this.getColumn(colIndex);
+      var colSum = _(col).reduce(function (memo, num) {
+        return memo + num;
+      }, 0);
+      if (colSum > 1) {
+        result = true;
+      }
+      return result;
     },
 
     hasAnyColConflicts: function () {
