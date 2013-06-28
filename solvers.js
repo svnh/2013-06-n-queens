@@ -68,17 +68,58 @@ window.countNRooksSolutions = function (n) {
 };
 
 window.findNQueensSolution = function (n) {
-  var solution = undefined; //fixme
+  var board = new Board(makeEmptyMatrix(n));
+  var solution = false;
 
-  console.log('Single solution for ' + n + ' queens:', solution);
-  return solution;
+  var iterate = function (row) {
+      for (var i = 0; i < n; i++) {
+        board.togglePiece(row, i);
+        if (row === n-1){
+          solution = true;
+          return;
+        }
+        if (board.hasAnyQueensConflicts) {
+          board.togglePiece(row, i);
+        } else {
+          return iterate(row + 1);
+        }
+      }
+    };
+    //if I successfully place a queen AND im in the last row, print my current board!
+
+ iterate(0);
+
+console.log('Single solution for ' + n + ' queens:', board);
+return board;
 };
 
 window.countNQueensSolutions = function (n) {
-  var solutionCount = undefined; //fixme
+  // var board = new Board(makeEmptyMatrix(n));
+  // var solution = false;
+  // var count = 0;
 
-  console.log('Number of solutions for ' + n + ' queens:', solutionCount);
-  return solutionCount;
+  // var iterate = function (row) {
+  //     for (var i = 0; i < n; i++) {
+  //       board.togglePiece(row, i);
+  //       if (row === n-1){
+  //         solution = true;
+  //         count++;
+  //         return;
+  //       }
+  //       if (board.hasAnyQueensConflicts) {
+  //         board.togglePiece(row, i);
+  //       } else {
+  //         return iterate(row + 1);
+  //       }
+  //     }
+  //   };
+    //if I successfully place a queen AND im in the last row, print my current board!
+
+ // iterate(0);
+
+  console.log('Number of solutions for ' + n + ' queens:', count);
+  return count;
+
 };
 
 // This function uses a board visualizer lets you view an interactive version of any piece matrix.
