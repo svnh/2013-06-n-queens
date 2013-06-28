@@ -2,12 +2,53 @@
 // hint: you'll need to do a full-search of all possible arrangements of pieces!
 // (There are also optimizations that will allow you to skip a lot of the dead search space)
 
-window.findNRooksSolution = function (n) {
-  var solution = undefined; //fixme
-
-  console.log('Single solution for ' + n + ' rooks:', solution);
-  return solution;
+var makeEmptyMatrix = function (n) {
+  return _(_.range(n)).map(function () {
+    return _(_.range(n)).map(function () {
+      return 0;
+    });
+  });
 };
+
+window.findNRooksSolution = function (n) {
+  var board = new Board(makeEmptyMatrix(n));
+  var solution = false;
+
+  var iterate = function (row) {
+      for (var i = 0; i < n; i++) {
+        board.togglePiece(row, i);
+        if (row === n-1){
+          solution = true;
+          return;
+        }
+        if (board.hasAnyRooksConflicts) {
+          board.togglePiece(row, i);
+        } else {
+          return iterate(row + 1);
+        }
+      }
+    };
+    //if I successfully place a queen AND im in the last row, print my current board!
+
+ iterate(0);
+
+console.log('Single solution for ' + n + ' rooks:', board);
+return board;
+};
+
+// function factorial(n) {
+//   if (n < 0) {
+//     // Termination condition to prevent infinite recursion
+//     console.log("ALERT: you entered a negative number which will break ths code");
+//     return;
+//   }
+//   // Base case
+//   if (n === 0) {
+//     return 1;
+//   }
+//   // Recursive case
+//   return n * factorial(n - 1);
+// }
 
 window.countNRooksSolutions = function (n) {
 
@@ -23,7 +64,6 @@ window.countNRooksSolutions = function (n) {
     return n * solutionCount(n - 1);
   };
 
-  console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
   return solutionCount(n);
 };
 
