@@ -32,7 +32,7 @@ window.findNRooksSolution = function (n) {
 
  iterate(0);
 
-console.log('Single solution for ' + n + ' rooks:', board);
+//console.log('Single solution for ' + n + ' rooks:', board);
 return board;
 };
 
@@ -73,36 +73,40 @@ window.findNQueensSolution = function (n) {
 
  iterate(0);
 
-console.log('Single solution for ' + n + ' queens:', board);
+//console.log('Single solution for ' + n + ' queens:', board);
 return board;
 };
+
+var counter = 0;
 
 window.countNQueensSolutions = function (n) {
   var board = new Board(makeEmptyMatrix(n));
   var solution = false;
-  var count = 0;
-
   var iterate = function (row) {
+    if (solution === false) {
       for (var i = 0; i < n; i++) {
-        board.togglePiece(row, i);
-        if (row === n-1){
-          solution = true;
-          count++;
-          return;
+          board.togglePiece(row, i);
+          if (!board.hasAnyQueensConflicts) {
+            if (row === n) {
+              solution = true;
+              counter++;
+              board.togglePiece(row,i);
+          } else {
+            iterate(row++);
+          }
         }
         if (board.hasAnyQueensConflicts) {
           board.togglePiece(row, i);
-        } else {
-          return iterate(row + 1);
         }
       }
-    };
-    //if I successfully place a queen AND im in the last row, print my current board!
-
- iterate(0);
-
-  console.log('Number of solutions for ' + n + ' queens:', count);
-  return count;
+    } else {
+      return;
+    }
+  };
+  //if I successfully place a queen AND im in the last row, print my current board!
+  iterate(0);
+  console.log('Number of solutions for ' + n + ' queens:', counter);
+  return counter;
 
 };
 
